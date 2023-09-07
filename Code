@@ -1,0 +1,62 @@
+Weapons
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+using UnityEngine.InputSystem; 
+
+public class Weapon : MonoBehaviour 
+{
+    public Transform shootingPoint;
+    public GameObject bulletPrefab;
+
+    private CharacterInput controls;
+
+    void Awake()
+    {
+        controls = new CharacterInput();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (controls.Player.Shoot.triggered)
+        {
+            Instantiate(bulletPrefab, shootingPoint.position, transform.rotation); 
+        }
+    }
+}
+
+Bullet
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Bullet : MonoBehaviour
+{
+    private Rigidbody2D rb;
+    public float speed; 
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        rb.velocity = transform.right * speed; 
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
