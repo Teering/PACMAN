@@ -7,10 +7,10 @@ using UnityEngine.InputSystem;
 
 public class Weapon : MonoBehaviour 
 {
+    private CharacterInput controls;
+
     public Transform shootingPoint;
     public GameObject bulletPrefab;
-
-    private CharacterInput controls;
 
     void Awake()
     {
@@ -32,8 +32,13 @@ public class Weapon : MonoBehaviour
     {
         if (controls.Player.Shoot.triggered)
         {
-            Instantiate(bulletPrefab, shootingPoint.position, transform.rotation); 
+            Shoot(); 
         }
+    }
+
+    void Shoot()
+    {        
+        Instantiate(bulletPrefab, shootingPoint.position, transform.rotation);      
     }
 }
 
@@ -44,7 +49,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private Rigidbody2D rb;
+   private Rigidbody2D rb;
     public float speed; 
 
     // Start is called before the first frame update
@@ -52,12 +57,6 @@ public class Bullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = transform.right * speed; 
-    }
-
-    // Update is called once per frame
-    void Update
-    {
-        
     }
 }
 
@@ -69,18 +68,33 @@ using UnityEngine.InputSystem;
 
 public class MovePlayer: MonoBehaviour
 {
-    
+    private CharacterInput controls;
+
+    void Awake()
+    {
+        controls = new CharacterInput();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
     // Update is called once per frame
     void Update()
     {
         Flip(); 
     }
 
-    void FLip()
-    { 
-        if (Mouse.current.downLeftButton.wasPressedThisFrame)
+    void Flip()
+    {
+        if (controls.Player.Shoot.triggered)
         {
-              transform.Rotate(0, 180, 0)
-        {
+            transform.Rotate(0, 180, 0); 
+        }
     }
 }
