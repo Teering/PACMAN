@@ -1,0 +1,78 @@
+Sound
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+using UnityEngine.InputSystem; 
+
+public class Weapon : MonoBehaviour 
+{
+    private CharacterInput controls;
+
+    public Transform shootingPoint;
+    public GameObject bulletPrefab;
+    public AudioSource shootingSoundEffect; 
+
+    void Awake()
+    {
+        controls = new CharacterInput();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (controls.Player.Shoot.triggered)
+        {
+            shootingSoundEffect.Play();
+            Shoot(); 
+        }
+    }
+
+    void Shoot()
+    {        
+        Instantiate(bulletPrefab, shootingPoint.position, transform.rotation);
+    }
+}
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+    public float health = 20;
+    public AudioSource deadGhostSoundEffect;
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+            deadGhostSoundEffect.Play();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Enemy enemy = collision.GetComponent<Enemy>();
+
+        if (enemy != null)
+        {
+            enemy.TakeDamage(20);            
+        }
+        Destroy(gameObject);
+        
+    }
+}
+
