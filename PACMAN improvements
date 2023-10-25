@@ -44,6 +44,7 @@ public class Weapon : MonoBehaviour
     }
 }
 
+Enemy(and sound that does not work) 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,7 +52,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float health = 20;
-    public AudioSource deadGhostSoundEffect;
+    public AudioSource deathSoundEffect;
 
     public void TakeDamage(float damage)
     {
@@ -59,7 +60,7 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
-            deadGhostSoundEffect.Play();
+            deathSoundEffect.Play();
         }
     }
 
